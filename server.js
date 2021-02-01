@@ -6,7 +6,10 @@ const MongoStore = require('connect-mongo')(session)
 const api = require('./api/controller')
 const app = express()
 const db = mongoose.connect(
-    'mongodb://localhost:27017/test'
+    'mongodb://localhost:27017/test', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    }
 ).then(conn => conn).catch(console.error)
 
 app.use(bodyParser.json())
@@ -28,3 +31,7 @@ app.use(session({
         mongooseConnection: mongoose.connection,
         }),
 }))
+app.use('/users', api)
+app.listen(
+    3000, console.log('Web Server listening on port 3000')
+)
